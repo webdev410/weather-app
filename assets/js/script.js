@@ -7,6 +7,7 @@ var weatherFormEl = document.querySelector('#weatherForm')
 var cityInputEl = document.querySelector('#cityInput')
 var cityContainer = document.querySelector('#city-container')
 var citySearchTerm = document.querySelector('#city-search-term')
+var apiKey = "fb3697a89b0dcdb9ac99c595bc4f441c"
 
 var formSubmit = function (event) {
        event.preventDefault();
@@ -28,7 +29,7 @@ var formSubmit = function (event) {
 
 
 var getUserCity = function (cityInput) {
-       var apiUrl = 'api.openweathermap.org/data/2.5/forecast?q=' + cityInput + '&appid=fb3697a89b0dcdb9ac99c595bc4f441c'
+       var apiUrl = 'api.openweathermap.org/data/2.5/forecast?q=' + cityInput + 'us&appid=' + apiKey
 
        fetch(apiUrl)
               .then(function (response) {
