@@ -11,7 +11,7 @@ var apiKey = "fb3697a89b0dcdb9ac99c595bc4f441c"
 
 var formSubmit = function (event) {
        event.preventDefault();
-       var cityInput = cityInputEl.value.trim();
+       var cityInput = cityInputEl // .value.trim();
        // console.log('cityInput: ', cityInput)
 
        
