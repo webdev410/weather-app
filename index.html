@@ -16,30 +16,37 @@
        </head>
 
        <body>
-              <div class="header bg-primary">
+              <header class="header bg-primary">
                      <h1>Weather Dashboard</h1>
-              </div>
+              </header>
 
               <div class="container-fluid">
                      <div class="row">
-                            <div class="col-12">
-                                   <h2>Search for a City:</h2>
-
-                            </div>
-                            <div class="col-2" id="search">
-                                   <form action="weatherLookup()">
-                                          <input type="text" placeholder="City"> <br>
-                                          <button class="btn btn-primary btn-block">Submit</button>
+                            <!-- Search Box -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                   <h3>Search for a City:</h3>
+                                   <form class="card-body" id="weatherForm">
+                                          <label>City</label>
+                                          <input class="form-input" name="cityInput" id="cityInput" type="text" for="cityInput"
+                                                 placeholder="Enter City"> <br>
+                                          <button type="submit" class="btn btn-primary btn-block">Search</button>
                                    </form>
+                                   <!-- Popular Cities -->
 
+                                   <h3 class="card-header text-uppercase">Popular Cities</h3>
+                                   <div id="language-buttons" class="card-body">
+                                          <button data-city="New York" class="btn btn-primary btn-block">New York</button>
+                                          <button data-city="Los Angeles" class="btn btn-primary btn-block">Los Angeles</button>
+                                          <button data-city="Phoenix" class="btn btn-primary btn-block">Phoenix</button>
+                                   </div>
                             </div>
-                            <div class="col-8" id="result">
 
-
+                            <!-- Result Container -->
+                            <div class="col-12 col-md-6 col-lg-9" id="result">
+                                   <h2 class="subtitle">Weather for: <span id="city-search-term"></span></h2>
+                                   <div id="city-container" class="list-group"></div>
                             </div>
-
                      </div>
-
               </div>
 
 
