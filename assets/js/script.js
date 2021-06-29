@@ -4,47 +4,37 @@
 // baltimore - 4347778
 
 
+var apiKey = "fb3697a89b0dcdb9ac99c595bc4f441c"
+
 var weatherFormEl = document.querySelector('#weatherForm')
 var cityInputEl = document.querySelector('#cityInput')
 var cityContainer = document.querySelector('#city-container')
 var citySearchTerm = document.querySelector('#city-search-term')
-var apiKey = "fb3697a89b0dcdb9ac99c595bc4f441c"
 
 var formSubmit = function (event) {
        event.preventDefault();
        var cityInput = cityInputEl.value.trim();
-      console.log('cityInput: ', cityInput)
+       console.log('formSubmit - cityInput: ', cityInput)
 
-       
        if (cityInput) {
               getUserCity(cityInput);
               cityContainer.textContent = '';
               cityInputEl.value = '';
-
-             
-
        } else {
               alert('Please enter a valid city name');
        }
 }
 
-// function convertCityId() {
-
-//        cityInput.textContent
-//        console.log('cityInput')
-// }
-
-
 var getUserCity = function (cityInput) {
-       var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',us&appid=' + apiKey
+       var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',us&appid=' + apiKey
 
        fetch(apiUrl)
               .then(function (response) {
                      if (response.ok) {
                             console.log("response OK. response = ", response);
-                            response.json().then(function (cityInput) {
-                                   console.log("success", cityInput);
-                                   displayCity('cityInput', cityInput);
+                            response.json().then(function (data) {
+                                   console.log("data", data);
+                                   displayCity(data, cityInput);
                             });
                      } else {
                             alert('Error: ' + response.statusText);
@@ -54,6 +44,23 @@ var getUserCity = function (cityInput) {
                      alert('Unable to connect to Weather API');
               });
 };
+
+var displayCity = function (cities, searchTerm) {
+
+       if (cities.length === 0) {
+              cityContainer.textContent = 'No cities found.';
+              return;
+       }
+
+       console.log('searchterm', searchTerm)
+
+       for (var i = 0; i < cities.length; i++) {
+              var cityName = cities[i].city + '/' + cities[i].name;
+              console.log("cityname", cityName)
+       }
+
+       citySearchTerm.textContent = searchTerm;
+}
 
 
 weatherFormEl.addEventListener('submit', formSubmit);
@@ -65,7 +72,13 @@ weatherFormEl.addEventListener('submit', formSubmit);
 //            THEN I am presented with current and future conditions for that city and that city is added to the search history
 
 //        WHEN I view current weather conditions for that city
-//            THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
+//            THEN I am presented with the city name, 
+//            the date, 
+//            an icon representation of weather conditions, 
+//            the temperature, 
+//            the humidity, 
+//            the wind speed, 
+//            and the UV index
 //        WHEN I view the UV index
 //        THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
 //        
