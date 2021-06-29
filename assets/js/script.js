@@ -29,7 +29,7 @@ var formSubmit = function (event) {
 
 
 var getUserCity = function (cityInput) {
-       var apiUrl = 'api.openweathermap.org/data/2.5/forecast?q=' + cityInput + 'us&appid=' + apiKey
+       var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + 'us&appid=' + apiKey
 
        fetch(apiUrl)
               .then(function (response) {
