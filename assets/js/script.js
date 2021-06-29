@@ -1,6 +1,7 @@
 // api.openweathermap.org / data / 2.5 / forecast ? q = { city name } & appid={ API key }
 
 // API Key - fb3697a89b0dcdb9ac99c595bc4f441c
+// baltimore - 4347778
 
 
 var weatherFormEl = document.querySelector('#weatherForm')
@@ -11,8 +12,8 @@ var apiKey = "fb3697a89b0dcdb9ac99c595bc4f441c"
 
 var formSubmit = function (event) {
        event.preventDefault();
-       var cityInput = cityInputEl // .value.trim();
-       // console.log('cityInput: ', cityInput)
+       var cityInput = cityInputEl.value.trim();
+      console.log('cityInput: ', cityInput)
 
        
        if (cityInput) {
@@ -27,9 +28,15 @@ var formSubmit = function (event) {
        }
 }
 
+// function convertCityId() {
+
+//        cityInput.textContent
+//        console.log('cityInput')
+// }
+
 
 var getUserCity = function (cityInput) {
-       var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + 'us&appid=' + apiKey
+       var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',us&appid=' + apiKey
 
        fetch(apiUrl)
               .then(function (response) {
