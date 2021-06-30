@@ -12,6 +12,9 @@ var tempEl = document.querySelector('#temp')
 var humidityEl = document.querySelector('#humidity')
 var windEl = document.querySelector('#wind')
 var UVEl = document.querySelector('#uv-index')
+var descriptionEl = document.querySelector("#description")
+var iconEl = document.querySelector('#iconEl')
+
 
 // main weather div
 var cityName = ""
@@ -21,6 +24,8 @@ var humidity = ""
 var UVindex = ""
 var lon = ""
 var lat = ""
+var description = ""
+var descriptionIcon = ""
 
 
 var formSubmit = function (event) {
@@ -49,43 +54,49 @@ function getUV(lat, lon) {
                                    console.log('UVIndex', UVindex)
                                    console.log(data)
                                    UVEl.textContent = "UV: " + UVindex
+
+                                   if (UVindex <= 2) {
+                                          UVEl.setAttribute("style", "background-color: green; color: white; border-radius: 5px; width: 50px; padding:5px;")
+                                   }
+                                   if (UVindex > 2 && UVindex <= 5) {
+                                          UVEl.setAttribute("style", "background-color: yellow; color: black; border-radius: 5px; width: 50px; padding:5px;")
+                                   }
+                                   if (UVindex > 5 && UVindex <= 8) {
+                                          UVEl.setAttribute("style", "background-color: orange; color: black; border-radius: 5px; width: 50px; padding:5px;")
+                                   }
+                                   if (UVindex > 8 && UVindex <= 10) {
+                                          UVEl.setAttribute("style", "background-color: red; color: black; border-radius: 5px; width: 50px; padding:5px;")
+                                   }
+                                   else if (UVindex > 11) {
+                                          UVEl.setAttribute("style", "background-color: purple; color: white; border-radius: 5px; width: 50px; padding:5px;")
+                                   }
                             })
                      }
               });
-              if (UVindex<=2){
-                     UVEl.setAttribute("style", "background-color: green; color: white; border-radius: 5px; width: 50px; padding:5px;")
-              }
-              if (UVindex>2 && UVindex<=5){
-                     UVEl.setAttribute("style", "background-color: yellow; color: black; border-radius: 5px; width: 50px; padding:5px;")
-              }
-              if (UVindex>5 && UVindex<=8){
-                     UVEl.setAttribute("style", "background-color: orange; color: black; border-radius: 5px; width: 50px; padding:5px;")
-              }
-              if (UVindex>8 && UVindex<=10){
-                     UVEl.setAttribute("style", "background-color: red; color: black; border-radius: 5px; width: 50px; padding:5px;")
-              }
-              else if (UVindex>11){
-                     UVEl.setAttribute("style", "background-color: purple; color: white; border-radius: 5px; width: 50px; padding:5px;")
-              }
 
-  
+
+
 
        return UVApiResponse;
 }
 
-
+function setIcon() {
+       if (description === clear) {
+              descriptionIcon
+       }
+}
 
 function slices(sliceObj) {
 
        var days = new Array();
 
        var dayN = -1
-       console.log("sliceObj: ", sliceObj)
+
 
        for (var i = 0; i < sliceObj.length; i++) {
               console.log(sliceObj[i].main.temp)
               var dayTemp = sliceObj[i].main.temp
-              
+
               if ([0, 7, 15, 23, 31].includes(i)) {
                      dayN++
                      days[dayN] = new Array();
@@ -102,7 +113,7 @@ function slices(sliceObj) {
 
 
 var getUserCity = function (cityInput) {
-       var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',us&appid=' + apiKey + '&units=imperial'
+       var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',&appid=' + apiKey + '&units=imperial'
 
        fetch(apiUrl)
               .then(function (response) {
@@ -119,16 +130,41 @@ var getUserCity = function (cityInput) {
                                    wind = data.list[0].wind.speed;
                                    returnedLat = data.city.coord.lat;
                                    returnedLon = data.city.coord.lon;
+                                   description = data.list[0].weather[0].description
+                                   descriptionIcon = data.list[0].weather[0].icon
+
+                                   iconLink = 'http://openweathermap.org/img/wn/' + descriptionIcon + '@2x.png',
+
+                                   iconImg = document.createElement('img')
+                                  
+                                   
+
+
+
+
+
+
 
                                    console.log('cityName', cityName);
                                    console.log('temp', temp);
                                    console.log('humidity', humidity);
-                                   console.log('wind', wind, "mph");
+                                   console.log('wind', wind,);
+                                   console.log('description', description)
+                                   console.log('icon', descriptionIcon)
+                                   console.log('iconlink', iconLink)
 
                                    citySearchTerm.textContent = cityName;
-                                   tempEl.textContent = "Temp: " + temp;
-                                   humidityEl.textContent = "Humidity: " + humidity;
+                                   iconEl.appendChild(iconImg)
+                                   iconImg.src = iconLink
+                                   iconEl.setAttribute('style', 'display: inline;')
+
+
+                                   tempEl.textContent = "Temp: " + temp + "\u00B0" + " F";
+                                   humidityEl.textContent = "Humidity: " + humidity + "%";
                                    windEl.textContent = "Wind Speed: " + wind + "mph";
+                                   descriptionEl.textContent = "Description: " + description
+
+
 
                                    var returnedUV = getUV(returnedLat, returnedLon)
                                    console.log(returnedUV)
@@ -144,7 +180,6 @@ var getUserCity = function (cityInput) {
                      alert('Unable to connect to Weather API');
               });
 };
-
 
 weatherFormEl.addEventListener('submit', formSubmit);
 
