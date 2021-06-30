@@ -1,8 +1,6 @@
 // api.openweathermap.org / data / 2.5 / forecast ? q = { city name } & appid={ API key }
 
 // API Key - fb3697a89b0dcdb9ac99c595bc4f441c
-// baltimore - 4347778
-
 
 var apiKey = "fb3697a89b0dcdb9ac99c595bc4f441c"
 
@@ -10,6 +8,20 @@ var weatherFormEl = document.querySelector('#weatherForm')
 var cityInputEl = document.querySelector('#cityInput')
 var cityContainer = document.querySelector('#city-container')
 var citySearchTerm = document.querySelector('#city-search-term')
+var tempEl = document.querySelector('#temp')
+var humidityEl = document.querySelector('#humidity')
+var windEl = document.querySelector('#wind')
+var UVEl = document.querySelector('#uv-index')
+
+// main weather div
+var cityName = ""
+var temp = ""
+var wind = ""
+var humidity = ""
+var UVindex = ""
+var lon = ""
+var lat = ""
+
 
 var formSubmit = function (event) {
        event.preventDefault();
@@ -18,15 +30,50 @@ var formSubmit = function (event) {
 
        if (cityInput) {
               getUserCity(cityInput);
-              cityContainer.textContent = '';
               cityInputEl.value = '';
+
        } else {
               alert('Please enter a valid city name');
        }
 }
 
+
+function getUV(lat, lon) {
+       var UVApiResponse = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey
+
+       fetch(UVApiResponse)
+              .then(function (response) {
+                     if (response.ok) {
+                            response.json().then(function (data) {
+                                   var UVindex = data.current.uvi
+                                   console.log('UVIndex', UVindex)
+                                   console.log(data)
+                                   UVEl.textContent = "UV: " + UVindex
+                            })
+                     }
+              });
+
+       console.log(UVApiResponse) //Debug
+
+       return UVApiResponse;
+}
+
+
+
+// function slices(sliceObj){
+
+//        console.log("sliceObj: ", sliceObj)
+       
+//        for (var i =0; i < sliceObj.length; i++) {
+              
+//        }
+
+
+// }
+
+
 var getUserCity = function (cityInput) {
-       var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',us&appid=' + apiKey
+       var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',us&appid=' + apiKey + '&units=imperial'
 
        fetch(apiUrl)
               .then(function (response) {
@@ -34,7 +81,31 @@ var getUserCity = function (cityInput) {
                             console.log("response OK. response = ", response);
                             response.json().then(function (data) {
                                    console.log("data", data);
-                                   displayCity(data, cityInput);
+
+                                   sliceObj = data.list
+
+                                   cityName = data.city.name;
+                                   temp = data.list[0].main.temp;
+                                   humidity = data.list[0].main.humidity;
+                                   wind = data.list[0].wind.speed;
+                                   returnedLat = data.city.coord.lat;
+                                   returnedLon = data.city.coord.lon;
+
+                                   console.log('cityName', cityName);
+                                   console.log('temp', temp);
+                                   console.log('humidity', humidity);
+                                   console.log('wind', wind);
+
+                                   citySearchTerm.textContent = cityName;
+                                   tempEl.textContent = "Temp: " + temp;
+                                   humidityEl.textContent = "Humidity: " + humidity;
+                                   windEl.textContent = "Wind: " + wind;
+
+                                   var returnedUV = getUV(returnedLat, returnedLon)
+                                   console.log(returnedUV)
+
+                                   slices(sliceObj)
+
                             });
                      } else {
                             alert('Error: ' + response.statusText);
@@ -44,23 +115,6 @@ var getUserCity = function (cityInput) {
                      alert('Unable to connect to Weather API');
               });
 };
-
-var displayCity = function (cities, searchTerm) {
-
-       if (cities.length === 0) {
-              cityContainer.textContent = 'No cities found.';
-              return;
-       }
-
-       console.log('searchterm', searchTerm)
-
-       for (var i = 0; i < cities.length; i++) {
-              var cityName = cities[i].city + '/' + cities[i].name;
-              console.log("cityname", cityName)
-       }
-
-       citySearchTerm.textContent = searchTerm;
-}
 
 
 weatherFormEl.addEventListener('submit', formSubmit);
