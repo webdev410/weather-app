@@ -52,24 +52,53 @@ function getUV(lat, lon) {
                             })
                      }
               });
+              if (UVindex<=2){
+                     UVEl.setAttribute("style", "background-color: green; color: white; border-radius: 5px; width: 50px; padding:5px;")
+              }
+              if (UVindex>2 && UVindex<=5){
+                     UVEl.setAttribute("style", "background-color: yellow; color: black; border-radius: 5px; width: 50px; padding:5px;")
+              }
+              if (UVindex>5 && UVindex<=8){
+                     UVEl.setAttribute("style", "background-color: orange; color: black; border-radius: 5px; width: 50px; padding:5px;")
+              }
+              if (UVindex>8 && UVindex<=10){
+                     UVEl.setAttribute("style", "background-color: red; color: black; border-radius: 5px; width: 50px; padding:5px;")
+              }
+              else if (UVindex>11){
+                     UVEl.setAttribute("style", "background-color: purple; color: white; border-radius: 5px; width: 50px; padding:5px;")
+              }
 
-       console.log(UVApiResponse) //Debug
+  
 
        return UVApiResponse;
 }
 
 
 
-// function slices(sliceObj){
+function slices(sliceObj) {
 
-//        console.log("sliceObj: ", sliceObj)
-       
-//        for (var i =0; i < sliceObj.length; i++) {
+       var days = new Array();
+
+       var dayN = -1
+       console.log("sliceObj: ", sliceObj)
+
+       for (var i = 0; i < sliceObj.length; i++) {
+              console.log(sliceObj[i].main.temp)
+              var dayTemp = sliceObj[i].main.temp
               
-//        }
+              if ([0, 7, 15, 23, 31].includes(i)) {
+                     dayN++
+                     days[dayN] = new Array();
 
+              }
+              days[dayN].push(dayTemp)
+              console.log("dayN", dayN)
+              console.log(days)
+       }
 
-// }
+       // Do min max for each day
+
+}
 
 
 var getUserCity = function (cityInput) {
@@ -94,12 +123,12 @@ var getUserCity = function (cityInput) {
                                    console.log('cityName', cityName);
                                    console.log('temp', temp);
                                    console.log('humidity', humidity);
-                                   console.log('wind', wind);
+                                   console.log('wind', wind, "mph");
 
                                    citySearchTerm.textContent = cityName;
                                    tempEl.textContent = "Temp: " + temp;
                                    humidityEl.textContent = "Humidity: " + humidity;
-                                   windEl.textContent = "Wind: " + wind;
+                                   windEl.textContent = "Wind Speed: " + wind + "mph";
 
                                    var returnedUV = getUV(returnedLat, returnedLon)
                                    console.log(returnedUV)
