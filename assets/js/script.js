@@ -1,7 +1,3 @@
-// api.openweathermap.org / data / 2.5 / forecast ? q = { city name } & appid={ API key }
-
-// API Key - fb3697a89b0dcdb9ac99c595bc4f441c
-
 var apiKey = "fb3697a89b0dcdb9ac99c595bc4f441c"
 
 var weatherFormEl = document.querySelector('#weatherForm')
@@ -14,6 +10,9 @@ var windEl = document.querySelector('#wind')
 var UVEl = document.querySelector('#uv-index')
 var descriptionEl = document.querySelector("#description")
 var iconEl = document.querySelector('#iconEl')
+var iconImg = document.createElement('img')
+
+
 
 
 // main weather div
@@ -27,7 +26,6 @@ var lat = ""
 var description = ""
 var descriptionIcon = ""
 
-
 var formSubmit = function (event) {
        event.preventDefault();
        var cityInput = cityInputEl.value.trim();
@@ -39,9 +37,12 @@ var formSubmit = function (event) {
 
        } else {
               alert('Please enter a valid city name');
-       }
-}
+       };
 
+       if (iconImg) {
+              iconImg.remove();
+       };
+};
 
 function getUV(lat, lon) {
        var UVApiResponse = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey
@@ -73,44 +74,57 @@ function getUV(lat, lon) {
                             })
                      }
               });
-
-
-
-
        return UVApiResponse;
 }
 
-function setIcon() {
-       if (description === clear) {
-              descriptionIcon
-       }
-}
-
 function slices(sliceObj) {
-
        var days = new Array();
-
        var dayN = -1
 
-
        for (var i = 0; i < sliceObj.length; i++) {
-              console.log(sliceObj[i].main.temp)
+              //     console.log(sliceObj[i].main.temp)
               var dayTemp = sliceObj[i].main.temp
 
               if ([0, 7, 15, 23, 31].includes(i)) {
                      dayN++
                      days[dayN] = new Array();
-
               }
               days[dayN].push(dayTemp)
-              console.log("dayN", dayN)
-              console.log(days)
+              //    console.log("dayN", dayN)
+              //    console.log(days)
        }
-
-       // Do min max for each day
-
 }
 
+function fiveDay() {
+       var fiveDayCont = document.querySelector('#fiveDayCont')
+
+
+       for (var i = 1; i <= 5; i++) {
+
+              var dayCard = document.createElement('div')
+              var cardBody = document.createElement('div')
+              var dayTitle = document.createElement('h5')
+              var dayTemp = document.createElement('p')
+              var dayWind = document.createElement('p')
+              var dayHumidity = document.createElement('p')
+
+              fiveDayCont.appendChild(dayCard)
+              dayCard.appendChild(dayTitle)
+              dayCard.appendChild(dayTemp)
+              dayCard.appendChild(dayWind)
+              dayCard.appendChild(dayHumidity)
+
+              dayTitle.textContent = "Day " + [i];
+              dayTemp.textContent = "Temp: ";
+              dayWind.textContent = "Wind: ";
+              dayHumidity.textContent = "Humidity: ";
+
+              dayCard.setAttribute("class", "card bg-primary text-white p-2 m-1")
+              cardBody.setAttribute("class", "card-body")
+
+              dayTitle.setAttribute("style", "background-color: black; color: white;")
+       }
+}
 
 var getUserCity = function (cityInput) {
        var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',&appid=' + apiKey + '&units=imperial'
@@ -133,44 +147,23 @@ var getUserCity = function (cityInput) {
                                    description = data.list[0].weather[0].description
                                    descriptionIcon = data.list[0].weather[0].icon
 
-                                   iconLink = 'http://openweathermap.org/img/wn/' + descriptionIcon + '@2x.png',
+                                   iconLink = 'http://openweathermap.org/img/wn/' + descriptionIcon + '@2x.png'
 
-                                   iconImg = document.createElement('img')
-                                  
-                                   
-
-
-
-
-
-
-
-                                   console.log('cityName', cityName);
-                                   console.log('temp', temp);
-                                   console.log('humidity', humidity);
-                                   console.log('wind', wind,);
-                                   console.log('description', description)
-                                   console.log('icon', descriptionIcon)
-                                   console.log('iconlink', iconLink)
-
-                                   citySearchTerm.textContent = cityName;
                                    iconEl.appendChild(iconImg)
                                    iconImg.src = iconLink
                                    iconEl.setAttribute('style', 'display: inline;')
 
-
+                                   citySearchTerm.textContent = cityName;
                                    tempEl.textContent = "Temp: " + temp + "\u00B0" + " F";
                                    humidityEl.textContent = "Humidity: " + humidity + "%";
                                    windEl.textContent = "Wind Speed: " + wind + "mph";
                                    descriptionEl.textContent = "Description: " + description
 
-
-
                                    var returnedUV = getUV(returnedLat, returnedLon)
                                    console.log(returnedUV)
 
+                                   fiveDay()
                                    slices(sliceObj)
-
                             });
                      } else {
                             alert('Error: ' + response.statusText);
