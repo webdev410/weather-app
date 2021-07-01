@@ -12,9 +12,6 @@ var descriptionEl = document.querySelector("#description")
 var iconEl = document.querySelector('#iconEl')
 var iconImg = document.createElement('img')
 
-
-
-
 // main weather div
 var cityName = ""
 var temp = ""
@@ -29,7 +26,7 @@ var descriptionIcon = ""
 var formSubmit = function (event) {
        event.preventDefault();
        var cityInput = cityInputEl.value.trim();
-       console.log('formSubmit - cityInput: ', cityInput)
+       //     console.log('formSubmit - cityInput: ', cityInput)
 
        if (cityInput) {
               getUserCity(cityInput);
@@ -37,10 +34,6 @@ var formSubmit = function (event) {
 
        } else {
               alert('Please enter a valid city name');
-       };
-
-       if (iconImg) {
-              iconImg.remove();
        };
 };
 
@@ -52,8 +45,8 @@ function getUV(lat, lon) {
                      if (response.ok) {
                             response.json().then(function (data) {
                                    var UVindex = data.current.uvi
-                                   console.log('UVIndex', UVindex)
-                                   console.log(data)
+                                   // console.log('UVIndex', UVindex)
+                                   // console.log(data)
                                    UVEl.textContent = "UV: " + UVindex
 
                                    if (UVindex <= 2) {
@@ -77,29 +70,30 @@ function getUV(lat, lon) {
        return UVApiResponse;
 }
 
-function slices(sliceObj) {
-       var days = new Array();
-       var dayN = -1
+// function slice(sliceObj) {
+//        var days = new Array();
+//        var dayN = -1
 
-       for (var i = 0; i < sliceObj.length; i++) {
-              //     console.log(sliceObj[i].main.temp)
-              var dayTemp = sliceObj[i].main.temp
+//        for (var i = 0; i < sliceObj.length; i++) {
+//               console.log(sliceObj[i].main.temp)
+//               var dayTemp = sliceObj[i].main.temp
 
-              if ([0, 7, 15, 23, 31].includes(i)) {
-                     dayN++
-                     days[dayN] = new Array();
-              }
-              days[dayN].push(dayTemp)
-              //    console.log("dayN", dayN)
-              //    console.log(days)
-       }
-}
+//               if ([0, 7, 15, 23, 31].includes(i)) {
+//                      dayN++
+//                      days[dayN] = new Array();
+//                      console.log("new day")
+//               }
+//               days[dayN].push(dayTemp)
+//               console.log("dayN", dayN)
+//               console.log(days)
+//        }
+// }
+
 
 function fiveDay() {
        var fiveDayCont = document.querySelector('#fiveDayCont')
 
-
-       for (var i = 1; i <= 5; i++) {
+       for (var i = 0; i <= 5; i++) {
 
               var dayCard = document.createElement('div')
               var cardBody = document.createElement('div')
@@ -119,10 +113,10 @@ function fiveDay() {
               dayWind.textContent = "Wind: ";
               dayHumidity.textContent = "Humidity: ";
 
-              dayCard.setAttribute("class", "card bg-primary text-white p-2 m-1")
+              dayCard.setAttribute("class", "card bg-primary text-white p-4 m-1")
               cardBody.setAttribute("class", "card-body")
-
-              dayTitle.setAttribute("style", "background-color: black; color: white;")
+              cardBody.setAttribute("style", "width: 25%;")
+              dayTitle.setAttribute("style", "color: white;")
        }
 }
 
@@ -163,7 +157,7 @@ var getUserCity = function (cityInput) {
                                    console.log(returnedUV)
 
                                    fiveDay()
-                                   slices(sliceObj)
+                                   // slice(sliceObj)
                             });
                      } else {
                             alert('Error: ' + response.statusText);
