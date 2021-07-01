@@ -66,6 +66,9 @@ var day3humidity = document.querySelector('#day3-humidity')
 var day4humidity = document.querySelector('#day4-humidity')
 var day5humidity = document.querySelector('#day5-humidity')
 
+// var searchListBtn = document.createElement('button')
+var searchList = []
+
 var formSubmit = function (event) {
        event.preventDefault();
        var cityInput = cityInputEl.value.trim();
@@ -79,6 +82,25 @@ var formSubmit = function (event) {
               alert('Please enter a valid city name');
        };
 };
+
+
+function searchHistory() {
+       var buttonGroup = document.querySelector('#btn-group')
+       var button = document.createElement('button')
+
+       searchList = JSON.parse(localStorage.getItem("searchTerm"));
+       if (searchList === null) {
+              searchList = [];
+       }
+       
+       for (var i = 0; i < searchList.length; i++) {
+              buttonGroup.appendChild(button)
+              button.textContent = searchList[i]
+              console.log(button)
+              console.log(searchList[i])
+              button.setAttribute("class", "btn btn-primary btn-block")
+       }
+}
 
 function getUV(lat, lon) {
        var UVApiResponse = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey
@@ -124,7 +146,7 @@ var getUserCity = function (cityInput) {
                             response.json().then(function (data) {
                                    console.log("data", data);
 
-                                  
+
 
                                    cityName = data.city.name;
                                    temp = data.list[0].main.temp;
@@ -160,8 +182,6 @@ var getUserCity = function (cityInput) {
                                    dateFormatted3 = moment(dateUnix3).format('MM/DD/YYYY')
                                    dateFormatted4 = moment(dateUnix4).format('MM/DD/YYYY')
                                    dateFormatted5 = moment(dateUnix5).format('MM/DD/YYYY')
-
-
 
                                    console.log(dateFormatted)
 
@@ -228,7 +248,10 @@ var getUserCity = function (cityInput) {
 
                                    fiveDayCont.setAttribute('style', 'display: inline; width: 25%;')
 
+                                   searchList.push(cityName);
+                                   localStorage.setItem("searchTerm", JSON.stringify(searchList));
 
+                                   searchHistory()
                                    // fiveDay()
                                    // slice(sliceObj)
 
@@ -247,19 +270,6 @@ weatherFormEl.addEventListener('submit', formSubmit);
 
 
 
-//        
-//            THEN I am presented with the city name, 
-//            the date, 
-//            an icon representation of weather conditions, 
-//            the temperature, 
-//            the humidity, 
-//            the wind speed, 
-//            and the UV index
-//        WHEN I view the UV index
-//        THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-//        
-//       WHEN I view future weather conditions for that city
-//            THEN I am presented with a 5 - day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-//       
+
 //           WHEN I click on a city in the search history
 //            THEN I am again presented with current and future conditions for that city
