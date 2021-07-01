@@ -23,6 +23,49 @@ var lat = ""
 var description = ""
 var descriptionIcon = ""
 
+// 5 day div
+var day1Card = document.querySelector('#day1')
+var day2Card = document.querySelector('#day2')
+var day3Card = document.querySelector('#day3')
+var day4Card = document.querySelector('#day4')
+var day5Card = document.querySelector('#day5')
+
+var day1Title = document.querySelector('#day1-title')
+var day2Title = document.querySelector('#day2-title')
+var day3Title = document.querySelector('#day3-title')
+var day4Title = document.querySelector('#day4-title')
+var day5Title = document.querySelector('#day5-title')
+
+var day1iconEl = document.querySelector('#day1-icon')
+var day2iconEl = document.querySelector('#day2-icon')
+var day3iconEl = document.querySelector('#day3-icon')
+var day4iconEl = document.querySelector('#day4-icon')
+var day5iconEl = document.querySelector('#day5-icon')
+
+var iconImg1 = document.createElement('img')
+var iconImg2 = document.createElement('img')
+var iconImg3 = document.createElement('img')
+var iconImg4 = document.createElement('img')
+var iconImg5 = document.createElement('img')
+
+var day1temp = document.querySelector('#day1-temp')
+var day2temp = document.querySelector('#day2-temp')
+var day3temp = document.querySelector('#day3-temp')
+var day4temp = document.querySelector('#day4-temp')
+var day5temp = document.querySelector('#day5-temp')
+
+var day1wind = document.querySelector('#day1-wind')
+var day2wind = document.querySelector('#day2-wind')
+var day3wind = document.querySelector('#day3-wind')
+var day4wind = document.querySelector('#day4-wind')
+var day5wind = document.querySelector('#day5-wind')
+
+var day1humidity = document.querySelector('#day1-humidity')
+var day2humidity = document.querySelector('#day2-humidity')
+var day3humidity = document.querySelector('#day3-humidity')
+var day4humidity = document.querySelector('#day4-humidity')
+var day5humidity = document.querySelector('#day5-humidity')
+
 var formSubmit = function (event) {
        event.preventDefault();
        var cityInput = cityInputEl.value.trim();
@@ -70,55 +113,6 @@ function getUV(lat, lon) {
        return UVApiResponse;
 }
 
-// function slice(sliceObj) {
-//        var days = new Array();
-//        var dayN = -1
-
-//        for (var i = 0; i < sliceObj.length; i++) {
-//               console.log(sliceObj[i].main.temp)
-//               var dayTemp = sliceObj[i].main.temp
-
-//               if ([0, 7, 15, 23, 31].includes(i)) {
-//                      dayN++
-//                      days[dayN] = new Array();
-//                      console.log("new day")
-//               }
-//               days[dayN].push(dayTemp)
-//               console.log("dayN", dayN)
-//               console.log(days)
-//        }
-// }
-
-
-function fiveDay() {
-       var fiveDayCont = document.querySelector('#fiveDayCont')
-
-       for (var i = 0; i <= 5; i++) {
-
-              var dayCard = document.createElement('div')
-              var cardBody = document.createElement('div')
-              var dayTitle = document.createElement('h5')
-              var dayTemp = document.createElement('p')
-              var dayWind = document.createElement('p')
-              var dayHumidity = document.createElement('p')
-
-              fiveDayCont.appendChild(dayCard)
-              dayCard.appendChild(dayTitle)
-              dayCard.appendChild(dayTemp)
-              dayCard.appendChild(dayWind)
-              dayCard.appendChild(dayHumidity)
-
-              dayTitle.textContent = "Day " + [i];
-              dayTemp.textContent = "Temp: ";
-              dayWind.textContent = "Wind: ";
-              dayHumidity.textContent = "Humidity: ";
-
-              dayCard.setAttribute("class", "card bg-primary text-white p-4 m-1")
-              cardBody.setAttribute("class", "card-body")
-              cardBody.setAttribute("style", "width: 25%;")
-              dayTitle.setAttribute("style", "color: white;")
-       }
-}
 
 var getUserCity = function (cityInput) {
        var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + ',&appid=' + apiKey + '&units=imperial'
@@ -130,7 +124,7 @@ var getUserCity = function (cityInput) {
                             response.json().then(function (data) {
                                    console.log("data", data);
 
-                                   sliceObj = data.list
+                                  
 
                                    cityName = data.city.name;
                                    temp = data.list[0].main.temp;
@@ -140,6 +134,36 @@ var getUserCity = function (cityInput) {
                                    returnedLon = data.city.coord.lon;
                                    description = data.list[0].weather[0].description
                                    descriptionIcon = data.list[0].weather[0].icon
+                                   descriptionIcon1 = data.list[7].weather[0].icon
+                                   descriptionIcon2 = data.list[15].weather[0].icon
+                                   descriptionIcon3 = data.list[23].weather[0].icon
+                                   descriptionIcon4 = data.list[31].weather[0].icon
+                                   descriptionIcon5 = data.list[39].weather[0].icon
+
+                                   date = data.list[0].dt
+                                   date1 = data.list[7].dt
+                                   date2 = data.list[15].dt
+                                   date3 = data.list[23].dt
+                                   date4 = data.list[31].dt
+                                   date5 = data.list[39].dt
+
+                                   dateUnix = moment.unix(date)
+                                   dateUnix1 = moment.unix(date1)
+                                   dateUnix2 = moment.unix(date2)
+                                   dateUnix3 = moment.unix(date3)
+                                   dateUnix4 = moment.unix(date4)
+                                   dateUnix5 = moment.unix(date5)
+
+                                   dateFormatted = moment(dateUnix).format('MM/DD/YYYY')
+                                   dateFormatted1 = moment(dateUnix1).format('MM/DD/YYYY')
+                                   dateFormatted2 = moment(dateUnix2).format('MM/DD/YYYY')
+                                   dateFormatted3 = moment(dateUnix3).format('MM/DD/YYYY')
+                                   dateFormatted4 = moment(dateUnix4).format('MM/DD/YYYY')
+                                   dateFormatted5 = moment(dateUnix5).format('MM/DD/YYYY')
+
+
+
+                                   console.log(dateFormatted)
 
                                    iconLink = 'http://openweathermap.org/img/wn/' + descriptionIcon + '@2x.png'
 
@@ -147,7 +171,8 @@ var getUserCity = function (cityInput) {
                                    iconImg.src = iconLink
                                    iconEl.setAttribute('style', 'display: inline;')
 
-                                   citySearchTerm.textContent = cityName;
+                                   citySearchTerm.textContent = cityName + " " + dateFormatted
+
                                    tempEl.textContent = "Temp: " + temp + "\u00B0" + " F";
                                    humidityEl.textContent = "Humidity: " + humidity + "%";
                                    windEl.textContent = "Wind Speed: " + wind + "mph";
@@ -156,8 +181,58 @@ var getUserCity = function (cityInput) {
                                    var returnedUV = getUV(returnedLat, returnedLon)
                                    console.log(returnedUV)
 
-                                   fiveDay()
+                                   var fiveDayCont = document.querySelector('#fiveDayCont')
+
+                                   day1Title.textContent = dateFormatted1
+                                   day2Title.textContent = dateFormatted2
+                                   day3Title.textContent = dateFormatted3
+                                   day4Title.textContent = dateFormatted4
+                                   day5Title.textContent = dateFormatted5
+
+
+                                   day1temp.textContent = "Temp: " + data.list[7].main.temp + "\u00B0" + " F";
+                                   day1humidity.textContent = "Humidity: " + data.list[7].main.humidity + "%";
+                                   day1wind.textContent = "Wind: " + data.list[7].wind.speed + "mph";
+                                   iconLink1 = 'http://openweathermap.org/img/wn/' + descriptionIcon1 + '@2x.png'
+                                   day1iconEl.appendChild(iconImg1)
+                                   iconImg1.src = iconLink1
+
+                                   day2temp.textContent = "Temp: " + data.list[15].main.temp + "\u00B0" + " F";
+                                   day2humidity.textContent = "Humidity: " + data.list[15].main.humidity + "%";
+                                   day2wind.textContent = "Wind: " + data.list[15].wind.speed + "mph";
+                                   iconLink2 = 'http://openweathermap.org/img/wn/' + descriptionIcon2 + '@2x.png'
+                                   day2iconEl.appendChild(iconImg2)
+                                   iconImg2.src = iconLink2
+
+                                   day3temp.textContent = "Temp: " + data.list[23].main.temp + "\u00B0" + " F";
+                                   day3humidity.textContent = "Humidity: " + data.list[23].main.humidity + "%";
+                                   day3wind.textContent = "Wind: " + data.list[23].wind.speed + "mph";
+                                   iconLink3 = 'http://openweathermap.org/img/wn/' + descriptionIcon3 + '@2x.png'
+                                   day3iconEl.appendChild(iconImg3)
+                                   iconImg3.src = iconLink3
+
+                                   day4temp.textContent = "Temp: " + data.list[31].main.temp + "\u00B0" + " F";
+                                   day4humidity.textContent = "Humidity: " + data.list[31].main.humidity + "%";
+                                   day4wind.textContent = "Wind: " + data.list[31].wind.speed + "mph";
+                                   iconLink4 = 'http://openweathermap.org/img/wn/' + descriptionIcon4 + '@2x.png'
+                                   day4iconEl.appendChild(iconImg4)
+                                   iconImg4.src = iconLink4
+
+                                   day5temp.textContent = "Temp: " + data.list[39].main.temp + "\u00B0" + " F";
+                                   day5humidity.textContent = "Humidity: " + data.list[39].main.humidity + "%";
+                                   day5wind.textContent = "Wind: " + data.list[39].wind.speed + "mph";
+                                   iconLink5 = 'http://openweathermap.org/img/wn/' + descriptionIcon5 + '@2x.png'
+                                   day5iconEl.appendChild(iconImg5)
+                                   iconImg5.src = iconLink5
+
+
+                                   fiveDayCont.setAttribute('style', 'display: inline; width: 25%;')
+
+
+                                   // fiveDay()
                                    // slice(sliceObj)
+
+
                             });
                      } else {
                             alert('Error: ' + response.statusText);
@@ -172,11 +247,7 @@ weatherFormEl.addEventListener('submit', formSubmit);
 
 
 
-//        GIVEN a weather dashboard with form inputs
-//        WHEN I search for a city
-//            THEN I am presented with current and future conditions for that city and that city is added to the search history
-
-//        WHEN I view current weather conditions for that city
+//        
 //            THEN I am presented with the city name, 
 //            the date, 
 //            an icon representation of weather conditions, 
