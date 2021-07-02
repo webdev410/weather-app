@@ -146,8 +146,6 @@ var getUserCity = function (cityInput) {
                             response.json().then(function (data) {
                                    console.log("data", data);
 
-
-
                                    cityName = data.city.name;
                                    temp = data.list[0].main.temp;
                                    humidity = data.list[0].main.humidity;
