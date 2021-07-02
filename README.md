@@ -2,6 +2,7 @@
 
 
 ## Description
+This is the fifth homework assignment for the Johns Hopkins Coding Bootcamp. The goal was to meet the criteria below.
 
 
 
