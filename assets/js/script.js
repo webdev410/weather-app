@@ -66,12 +66,13 @@ var day3humidity = document.querySelector('#day3-humidity')
 var day4humidity = document.querySelector('#day4-humidity')
 var day5humidity = document.querySelector('#day5-humidity')
 
-var searchListBtn = document.createElement('button')
+var buttonGroup = document.querySelector('#btn-group')
 var searchList = []
+var cityInput ;
 
 var formSubmit = function (event) {
         event.preventDefault();
-        var cityInput = cityInputEl.value.trim();
+        cityInput = cityInputEl.value.trim();
         //     console.log('formSubmit - cityInput: ', cityInput)
 
         if (cityInput) {
@@ -84,7 +85,7 @@ var formSubmit = function (event) {
 };
 
 function searchHistory() {
-        var buttonGroup = document.querySelector('#btn-group')
+        // var buttonGroup = document.querySelector('#btn-group')
         var button = document.createElement('button')
 
         searchList = JSON.parse(localStorage.getItem("searchTerm"));
@@ -102,14 +103,13 @@ function searchHistory() {
 }
 
 //not working
-function previousSearch(searchListBtn) {
+function previousSearch(event) {
+        event.preventDefault();
+        console.log("im here")
 
-        searchListBtn = document.querySelector(".searchHistoryBtn")
-
-        console.log("previousSearch")
-        searchListBtn.preventDefault();
-        cityInput = searchListBtn.target.textContent;
-        formSubmit();
+        cityInput = event.target.textContent;
+        console.log("cityInput: ", cityInput)
+        getUserCity(cityInput);
 }
 
 function getUV(lat, lon) {
@@ -268,5 +268,5 @@ var getUserCity = function (cityInput) {
                 });
 };
 
-searchListBtn.addEventListener('submit', previousSearch)
+buttonGroup.addEventListener('click', previousSearch)
 weatherFormEl.addEventListener('submit', formSubmit);
