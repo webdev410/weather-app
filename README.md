@@ -26,11 +26,11 @@ THEN I am again presented with current and future conditions for that city
 ## Screenshot
 ![](./assets/images/screenshot.png)
 
-##Technologies Used
+## Technologies Used
 * HTML
 * CSS
 * Javascript
 * OpenWeatherMap API
 
-##Developer Contact Info
+## Developer Contact Info
 webdev410@gmail.com
