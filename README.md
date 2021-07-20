@@ -1,4 +1,4 @@
-# weather-app
+# Weather App
 
 
 ## Description
@@ -25,3 +25,12 @@ THEN I am again presented with current and future conditions for that city
 
 ## Screenshot
 ![](./assets/images/screenshot.png)
+
+##Technologies Used
+* HTML
+* CSS
+* Javascript
+* OpenWeatherMap API
+
+##Developer Contact Info
+webdev410@gmail.com
